@@ -176,15 +176,34 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
               // <span class="t-en">{en.sections.certifications}</span>
               <span class="t-es">{es.sections.certifications}</span>
             </div>
+
+            {/* Featured program */}
+            <div class="cert-featured">
+              <span class="cert-featured-badge">★ Oracle Next Education</span>
+              <span class="cert-featured-name">
+                <span class="t-en">{d.programCert.name.en}</span>
+                <span class="t-es">{d.programCert.name.es}</span>
+              </span>
+              <span class="cert-featured-desc">
+                <span class="t-en">{d.programCert.description.en}</span>
+                <span class="t-es">{d.programCert.description.es}</span>
+              </span>
+              <a href={d.programCert.url} target="_blank" rel="noreferrer" class="cert-featured-link">
+                <span class="t-en">View certificate</span>
+                <span class="t-es">Ver certificado</span> ↗
+              </a>
+            </div>
+
+            {/* Individual formations */}
             <div class="certs-list">
               {d.certifications.map((cert) => (
-                <div class="cert-item">
+                <a href={cert.url} target="_blank" rel="noreferrer" class="cert-item">
                   <span class="cert-name">
                     <span class="t-en">{cert.name.en}</span>
                     <span class="t-es">{cert.name.es}</span>
                   </span>
-                  <span class="cert-issuer">{cert.issuer}</span>
-                </div>
+                  <span class="cert-date">{cert.date}</span>
+                </a>
               ))}
             </div>
           </div>

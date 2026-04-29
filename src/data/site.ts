@@ -97,12 +97,32 @@ export const SITE_DATA = {
     "Cloud & DevOps": ["Azure", "Git", "CI/CD", "REST APIs"],
   } as Record<string, string[]>,
 
+  programCert: {
+    name: { en: "Oracle Next Education F2 T7 — Back-end", es: "Programa Oracle Next Education F2 T7 — Back-end" },
+    description: {
+      en: "Comprehensive 6-month backend specialization by Oracle and Alura Latam covering Java, Spring Boot, databases, AI, and professional development. Top-tier scholarship program with 15 completed formations.",
+      es: "Especialización backend integral de 6 meses por Oracle y Alura Latam que cubre Java, Spring Boot, bases de datos, IA y desarrollo profesional. Programa de becas de alto nivel con 15 formaciones completadas.",
+    },
+    url: "https://app.aluracursos.com/user/luischiquitov/program/21/certificate",
+    date: "2025-01",
+  },
+
   certifications: [
-    { name: { en: "Programming Logic with JavaScript", es: "Formación Lógica de Programación con JavaScript" }, issuer: "Oracle ONE / Alura Latam" },
-    { name: { en: "Generative AI", es: "Formación IA Generativa — ONE" }, issuer: "Oracle ONE / Alura Latam" },
-    { name: { en: "SQL with MySQL", es: "Formación SQL con MySQL" }, issuer: "Oracle ONE / Alura Latam" },
-    { name: { en: "Java and Spring Framework G7", es: "Formación Java y Spring Framework G7 — ONE" }, issuer: "Oracle ONE / Alura Latam" },
-    { name: { en: "Artificial Intelligence and Java G7", es: "Formación Inteligencia Artificial y Java G7 — ONE" }, issuer: "Oracle ONE / Alura Latam" },
+    { name: { en: "Programming Logic with JavaScript", es: "Formación Lógica de programación con JavaScript" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-programacion-primeros-pasos-15697/certificate", date: "2024-06" },
+    { name: { en: "Beginner Programming G7 — ONE", es: "Formación Principiante en Programación G7 — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-programacion-primeros-pasos-grupo7-one-15788/certificate", date: "2024-07" },
+    { name: { en: "Personal Development G7 — ONE", es: "Formación Desarrollo Personal G7 — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-desarrollo-personal-grupo7-one-15787/certificate", date: "2024-07" },
+    { name: { en: "Java Object-Oriented Programming", es: "Formación Aprende a programar en Java con Orientación a Objetos" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-javaoo-15704/certificate", date: "2025-01" },
+    { name: { en: "Entrepreneurship & Professional Agility G7 — ONE", es: "Formación Emprendimiento, Agilidad y Protagonismo Profesional G7 — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-emprendimiento-agilidad-y-protagonismo-profesional-grupo7-one-15837/certificate", date: "2025-01" },
+    { name: { en: "Java Web with Spring Boot", es: "Formación Java Web: crea aplicaciones utilizando Spring Boot" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-java-web-spring-boot-15781/certificate", date: "2025-01" },
+    { name: { en: "Java and Spring Boot", es: "Formación Java y Spring Boot" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-java-spring-boot-15636/certificate", date: "2025-01" },
+    { name: { en: "Artificial Intelligence and Java G7 — ONE", es: "Formación Inteligencia Artificial y Java G7 — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-ia-java-grupo7-one-15833/certificate", date: "2025-01" },
+    { name: { en: "Java Object-Oriented G7 — ONE", es: "Formación Java Orientado a Objetos G7 — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-java-grupo7-one-15797/certificate", date: "2025-01" },
+    { name: { en: "Java and Spring Framework G7 — ONE", es: "Formación Java y Spring Framework G7 — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-spring-framework-grupo7-one-15798/certificate", date: "2025-01" },
+    { name: { en: "SQL with MySQL", es: "Formación SQL con MySQL" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-sql-con-mysql-15415/certificate", date: "2025-05" },
+    { name: { en: "SQL with MySQL Server — ONE", es: "Formación SQL con MySQL Server de Oracle — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-oracle-mysql-one-15452/certificate", date: "2025-05" },
+    { name: { en: "Generative AI — ONE", es: "Formación IA Generativa — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-ia-generativa-one-15802/certificate", date: "2025-05" },
+    { name: { en: "Oracle Cloud Infrastructure — ONE", es: "Formación Oracle Cloud Infrastructure — ONE" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-oracle-cloud-infraestructure-one-15469/certificate", date: "2025-05" },
+    { name: { en: "Oracle Cloud Infrastructure", es: "Formación Oracle Cloud Infrastructure" }, url: "https://app.aluracursos.com/user/luischiquitov/degree-oracle-cloud-infraestructure-15495/certificate", date: "2025-05" },
   ],
 
   publication: {
