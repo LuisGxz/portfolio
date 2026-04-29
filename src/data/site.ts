@@ -107,7 +107,7 @@ export const SITE_DATA = {
 
   publication: {
     title: "DEAR: DEtecting Ambiguous Requirements as a Way to Develop Skills in Requirement Specifications",
-    url: "",
+    url: "https://www.mdpi.com/2079-9292/13/15/3079",
   },
 
   projects: [

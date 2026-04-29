@@ -161,7 +161,11 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
                 <span class="t-es">{es.sections.publication}</span>
               </div>
               <div class="pub-block">
+                {d.publication.url ? (
+                <a href={d.publication.url} target="_blank" rel="noreferrer" class="pub-title">{d.publication.title} ↗</a>
+              ) : (
                 <span class="pub-title">{d.publication.title}</span>
+              )}
               </div>
             </div>
           )}
