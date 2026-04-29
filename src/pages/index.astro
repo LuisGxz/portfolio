@@ -1,0 +1,523 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
+import { SITE_DATA, TRANSLATIONS, TECH_GLYPHS, PROFICIENCY } from "../data/site";
+
+const d = SITE_DATA;
+const en = TRANSLATIONS.en;
+const es = TRANSLATIONS.es;
+
+const allTechs = [
+  ...d.stack.Frontend, ...d.stack.Backend,
+  ...d.stack.Databases, ...d.stack["Cloud & DevOps"],
+];
+const marqueeItems = [...allTechs, ...allTechs];
+
+const categories = Object.keys(d.projects.reduce((a, p) => { a[p.category] = true; return a; }, {} as Record<string, boolean>));
+const catCounts: Record<string, number> = {};
+for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0) + 1;
+---
+
+<Layout title="Luis Chiquito · Software Engineer">
+  <div class="grid-bg"></div>
+  <div class="scroll-prog" id="scroll-prog"></div>
+
+  <!-- === Nav === -->
+  <nav class="nav" id="nav">
+    <a href="#top" class="nav-brand">
+      <span class="dot"></span>
+      <span class="mono">LC</span>
+      <span style="color: var(--fg-3)">/ software engineer</span>
+    </a>
+    <div class="nav-links">
+      <a href="#about" data-spy="about">
+        <span class="num">01</span>
+        <span class="t-en">{en.nav.about}</span>
+        <span class="t-es">{es.nav.about}</span>
+      </a>
+      <a href="#stack" data-spy="stack">
+        <span class="num">02</span>
+        <span class="t-en">{en.nav.stack}</span>
+        <span class="t-es">{es.nav.stack}</span>
+      </a>
+      <a href="#projects" data-spy="projects">
+        <span class="num">03</span>
+        <span class="t-en">{en.nav.projects}</span>
+        <span class="t-es">{es.nav.projects}</span>
+      </a>
+      <a href="#contact" data-spy="contact">
+        <span class="num">04</span>
+        <span class="t-en">{en.nav.contact}</span>
+        <span class="t-es">{es.nav.contact}</span>
+      </a>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn" id="lang-toggle" title="Language">EN</button>
+      <button class="nav-btn" id="mode-toggle" title="Theme">☾</button>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <!-- === Hero (centered) === -->
+    <section class="hero" id="top">
+      <div>
+        <div class="hero-meta">
+          <span class="live">
+            <span class="t-en">{en.hero.available}</span>
+            <span class="t-es">{es.hero.available}</span>
+          </span>
+          <span>{d.location}</span>
+          <span class="tnum" id="utc-clock">UTC --:--:--</span>
+        </div>
+        <h1>
+          <span>Luis</span><br />
+          <span class="indent">Chiquito<span class="accent">.</span></span>
+        </h1>
+        <p class="hero-tagline">
+          <span class="arrow">→</span>
+          <span class="t-en">{d.tagline.en}</span>
+          <span class="t-es">{d.tagline.es}</span>
+        </p>
+        <div class="hero-bottom">
+          <div class="stat">
+            <span class="v tnum">{String(d.yearsExperience).padStart(2, "0")}</span>
+            <span>YEARS · since {d.startedYear}</span>
+          </div>
+          <div class="stat">
+            <span class="v tnum">04</span>
+            <span>BACKEND LANGS</span>
+          </div>
+          <div class="stat" style="align-items: flex-end; text-align: right;">
+            <span class="v">↓</span>
+            <span>
+              <span class="t-en">{en.hero.scroll}</span>
+              <span class="t-es">{es.hero.scroll}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Marquee === -->
+    <div class="marquee">
+      <div class="marquee-track">
+        {marqueeItems.map((tech) => (
+          <span><span class="dot">●</span>&nbsp;{tech}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- === About === -->
+    <section class="section" id="about">
+      <div class="reveal section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">
+          <span class="t-en">{en.sections.about}</span>
+          <span class="t-es">{es.sections.about}</span>
+        </h2>
+        <span class="section-aside">{d.startedYear}—2026</span>
+      </div>
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="about-bio t-en">{d.bio.en}</p>
+          <p class="about-bio t-es">{d.bio.es}</p>
+          <div class="about-stats">
+            <div class="stat-block">
+              <div class="v tnum">0{d.yearsExperience}</div>
+              <div class="l">
+                <span class="t-en">{en.about.yearsLabel}</span>
+                <span class="t-es">{es.about.yearsLabel}</span>
+              </div>
+            </div>
+            <div class="stat-block">
+              <div class="v tnum">{d.projects.length}+</div>
+              <div class="l">projects shipped</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">
+            // <span class="t-en">{en.about.timelineLabel}</span>
+            <span class="t-es">{es.about.timelineLabel}</span>
+          </div>
+          <div class="reveal-stagger tl-vertical reveal">
+            {d.timeline.map((item, i) => {
+              const isActive = i === d.timeline.length - 1;
+              return (
+                <div class={`tl-item ${isActive ? "active" : ""}`}>
+                  <div class="tl-year">
+                    {item.year}
+                    {isActive && (
+                      <>
+                        <span class="t-en"> · {en.about.activeLabel}</span>
+                        <span class="t-es"> · {es.about.activeLabel}</span>
+                      </>
+                    )}
+                  </div>
+                  <div class="tl-role">
+                    <span class="t-en">{item.role.en}</span>
+                    <span class="t-es">{item.role.es}</span>
+                  </div>
+                  <div class="tl-company">{item.company}</div>
+                  <div class="tl-summary">
+                    <span class="t-en">{item.summary.en}</span>
+                    <span class="t-es">{item.summary.es}</span>
+                  </div>
+                  <div class="tl-stack">
+                    {item.stack.map((s) => <span>{s}</span>)}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Stack === -->
+    <section class="section" id="stack">
+      <div class="reveal section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">
+          <span class="t-en">{en.sections.stack}</span>
+          <span class="t-es">{es.sections.stack}</span>
+        </h2>
+        <span class="section-aside">// 16 technologies</span>
+      </div>
+      <div class="reveal-stagger stack-grid reveal">
+        {Object.entries(d.stack).map(([cat, techs]) => (
+          <div class="stack-cat">
+            <div class="stack-cat-head">
+              <span>
+                <span class="t-en">{en.stack.categories[cat]}</span>
+                <span class="t-es">{es.stack.categories[cat]}</span>
+              </span>
+              <span class="count tnum">0{techs.length}</span>
+            </div>
+            <div class="stack-list">
+              {techs.map((tech) => (
+                <div class="tech-row">
+                  <div class="tech-glyph">{TECH_GLYPHS[tech] || tech.slice(0, 2)}</div>
+                  <div class="tech-name">{tech}</div>
+                  <div class="tech-bar" style={`--w: ${PROFICIENCY[tech] || 70}%`}></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- === Projects === -->
+    <section class="section" id="projects">
+      <div class="reveal section-head">
+        <span class="section-num">03</span>
+        <h2 class="section-title">
+          <span class="t-en">{en.sections.projects}</span>
+          <span class="t-es">{es.sections.projects}</span>
+        </h2>
+        <span class="section-aside">{d.projects.length} total</span>
+      </div>
+
+      <div class="reveal projects-controls">
+        <div class="filter-row">
+          <button class="filter-btn active" data-filter="All">
+            <span class="t-en">{en.projects.filterAll}</span>
+            <span class="t-es">{es.projects.filterAll}</span>
+            <span style="margin-left: 6px; opacity: 0.6;">({d.projects.length})</span>
+          </button>
+          {categories.map((cat) => (
+            <button class="filter-btn" data-filter={cat}>
+              <span class="t-en">{en.projects.filters[cat] || cat}</span>
+              <span class="t-es">{es.projects.filters[cat] || cat}</span>
+              <span style="margin-left: 6px; opacity: 0.6;">({catCounts[cat]})</span>
+            </button>
+          ))}
+        </div>
+        <div class="filter-count">
+          <span class="t-en">{en.projects.countLabel}</span>
+          <span class="t-es">{es.projects.countLabel}</span>
+          {" "}<span id="filter-shown" style="color: var(--fg)">{d.projects.length}</span> / {d.projects.length}
+        </div>
+      </div>
+
+      <div class="projects-grid" id="projects-grid">
+        {d.projects.map((p, i) => (
+          <article class="project-card" data-category={p.category} style={`--delay: ${i * 80}ms`}>
+            <div class="project-img">
+              <span class="project-img-num">P/{String(p.id).padStart(2, "0")}</span>
+              <span class="project-img-label">{p.placeholder}</span>
+            </div>
+            <div class="project-body">
+              <div class="project-meta">
+                <span>{p.category}</span>
+                <span>0{p.tags.length} TECH</span>
+              </div>
+              <h3 class="project-title">{p.title}</h3>
+              <p class="project-blurb">
+                <span class="t-en">{p.blurb.en}</span>
+                <span class="t-es">{p.blurb.es}</span>
+              </p>
+              <div class="project-tags">
+                {p.tags.map((tag) => <span class="project-tag">{tag}</span>)}
+              </div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href={p.live} target="_blank" rel="noreferrer">
+                  <span class="t-en">{en.projects.live}</span>
+                  <span class="t-es">{es.projects.live}</span> →
+                </a>
+                <a class="btn" href={p.source} target="_blank" rel="noreferrer">
+                  <span class="t-en">{en.projects.source}</span>
+                  <span class="t-es">{es.projects.source}</span> ⌘
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- === Contact === -->
+    <section class="section" id="contact">
+      <div class="reveal section-head">
+        <span class="section-num">04</span>
+        <h2 class="section-title">
+          <span class="t-en">{en.sections.contact}</span>
+          <span class="t-es">{es.sections.contact}</span>
+        </h2>
+        <span class="section-aside">mailto:{d.email}</span>
+      </div>
+      <div class="contact-grid">
+        <div class="reveal">
+          <h3 class="contact-headline">
+            <span class="t-en">Have something to <span class="accent">build?</span></span>
+            <span class="t-es">¿Tienes algo que <span class="accent">construir?</span></span>
+          </h3>
+          <p class="contact-sub">
+            <span class="t-en">{en.contact.sub}</span>
+            <span class="t-es">{es.contact.sub}</span>
+          </p>
+          <div class="contact-find">
+            <span>
+              <span class="t-en">{en.contact.orFind}:</span>
+              <span class="t-es">{es.contact.orFind}:</span>
+            </span>
+            <a href={d.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href={d.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a href={`mailto:${d.email}`}>Email ↗</a>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="form-sent" id="form-sent">
+            ✓ <span class="t-en">{en.contact.sent}</span>
+            <span class="t-es">{es.contact.sent}</span>
+          </div>
+          <form class="form" id="contact-form" action={`https://formspree.io/f/${d.formspreeId}`} method="POST">
+            <div class="field">
+              <label>
+                01 / <span class="t-en">{en.contact.name}</span>
+                <span class="t-es">{es.contact.name}</span>
+              </label>
+              <input type="text" name="name" required />
+            </div>
+            <div class="field">
+              <label>
+                02 / <span class="t-en">{en.contact.email}</span>
+                <span class="t-es">{es.contact.email}</span>
+              </label>
+              <input type="email" name="email" required />
+            </div>
+            <div class="field">
+              <label>
+                03 / <span class="t-en">{en.contact.message}</span>
+                <span class="t-es">{es.contact.message}</span>
+              </label>
+              <textarea name="message" required></textarea>
+            </div>
+            <button class="form-submit" type="submit">
+              <span class="t-en">{en.contact.send}</span>
+              <span class="t-es">{es.contact.send}</span> →
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Footer === -->
+    <footer class="footer">
+      <span>© 2026 Luis Chiquito</span>
+      <span>
+        <span class="t-en">{en.footer.built}</span>
+        <span class="t-es">{es.footer.built}</span>
+      </span>
+    </footer>
+  </main>
+
+  <script>
+    // === UTC Clock ===
+    const clockEl = document.getElementById("utc-clock")!;
+    function updateClock() {
+      clockEl.textContent = "UTC " + new Date().toUTCString().split(" ")[4];
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // === Scroll progress + scroll-spy ===
+    const progEl = document.getElementById("scroll-prog")!;
+    const navEl = document.getElementById("nav")!;
+    const spyLinks = document.querySelectorAll<HTMLAnchorElement>("[data-spy]");
+    const sections = ["about", "stack", "projects", "contact"];
+
+    function onScroll() {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+      progEl.style.setProperty("--prog", pct + "%");
+
+      navEl.classList.toggle("scrolled", window.scrollY > 24);
+
+      let cur = "about";
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 200) cur = id;
+      }
+      spyLinks.forEach((a) => {
+        a.classList.toggle("active", a.dataset.spy === cur);
+      });
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // === Smooth scroll ===
+    document.addEventListener("click", (e) => {
+      const a = (e.target as HTMLElement).closest('a[href^="#"]') as HTMLAnchorElement | null;
+      if (!a) return;
+      const href = a.getAttribute("href")!;
+      if (href === "#" || href.length < 2) return;
+      const el = document.querySelector(href);
+      if (!el) return;
+      e.preventDefault();
+      window.scrollTo({ top: (el as HTMLElement).offsetTop - 60, behavior: "smooth" });
+    });
+
+    // === Reveal on scroll ===
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    document.querySelectorAll(".reveal, .reveal-stagger").forEach((el) => {
+      revealObserver.observe(el);
+    });
+
+    // === Stack bar animation ===
+    const stackObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            stackObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    document.querySelectorAll(".stack-cat").forEach((el) => {
+      stackObserver.observe(el);
+    });
+
+    // === Project card stagger ===
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const delay = el.style.getPropertyValue("--delay") || "0ms";
+            el.style.transition = `opacity 700ms var(--ease) ${delay}, transform 700ms var(--ease) ${delay}, border-color var(--t-fast)`;
+            el.style.opacity = "1";
+            el.style.transform = "translateY(0)";
+            cardObserver.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    document.querySelectorAll<HTMLElement>(".project-card").forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(24px)";
+      cardObserver.observe(el);
+    });
+
+    // === Project filter ===
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    const cards = document.querySelectorAll<HTMLElement>(".project-card");
+    const shownEl = document.getElementById("filter-shown")!;
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const f = btn.dataset.filter!;
+        filterBtns.forEach((b) => b.classList.toggle("active", b === btn));
+
+        let count = 0;
+        cards.forEach((card) => {
+          const show = f === "All" || card.dataset.category === f;
+          card.hidden = !show;
+          if (show) count++;
+        });
+        shownEl.textContent = String(count);
+      });
+    });
+
+    // === Language toggle ===
+    const langBtn = document.getElementById("lang-toggle")!;
+    langBtn.addEventListener("click", () => {
+      const html = document.documentElement;
+      const next = html.lang === "en" ? "es" : "en";
+      html.lang = next;
+      langBtn.textContent = next.toUpperCase();
+    });
+
+    // === Theme toggle ===
+    const modeBtn = document.getElementById("mode-toggle")!;
+    modeBtn.addEventListener("click", () => {
+      const html = document.documentElement;
+      const next = html.dataset.mode === "dark" ? "light" : "dark";
+      html.dataset.mode = next;
+      modeBtn.textContent = next === "dark" ? "☾" : "☀";
+    });
+
+    // === Contact form (Formspree) ===
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const sentEl = document.getElementById("form-sent")!;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+
+      try {
+        await fetch(form.action, {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" },
+        });
+      } catch {
+        // Silently continue — show confirmation regardless for UX
+      }
+
+      form.classList.add("is-hidden");
+      sentEl.classList.add("visible");
+      form.reset();
+
+      setTimeout(() => {
+        sentEl.classList.remove("visible");
+        form.classList.remove("is-hidden");
+      }, 4000);
+    });
+  </script>
+</Layout>
