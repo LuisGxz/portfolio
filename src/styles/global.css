@@ -513,6 +513,35 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   .marquee-track { animation: none; }
 }
 
+/* === Education / Certs / Publication === */
+.subsection-label {
+  font-family: var(--mono); font-size: 11px; color: var(--fg-3);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
+}
+.about-education, .about-certs, .about-publication { margin-top: 40px; }
+
+.edu-block { padding: 16px; border: 1px solid var(--line-soft); border-radius: 6px; }
+.edu-degree { font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+.edu-institution { color: var(--fg-2); font-size: 14px; }
+.edu-period { color: var(--fg-3); font-family: var(--mono); font-size: 12px; margin-top: 4px; }
+
+.pub-block { padding: 16px; border: 1px solid var(--line-soft); border-radius: 6px; }
+.pub-title { color: var(--fg-2); font-size: 14px; font-style: italic; line-height: 1.5; }
+
+.certs-list { display: flex; flex-direction: column; gap: 8px; }
+.cert-item {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 10px 16px; border: 1px solid var(--line-soft); border-radius: 6px;
+  font-size: 13px;
+}
+.cert-name { color: var(--fg); }
+.cert-issuer { color: var(--fg-3); font-family: var(--mono); font-size: 11px; white-space: nowrap; }
+
+@media (max-width: 600px) {
+  .cert-item { flex-direction: column; gap: 4px; }
+  .cert-issuer { white-space: normal; }
+}
+
 /* Scroll progress */
 .scroll-prog {
   position: fixed; left: 0; top: 0; height: 2px; z-index: 60;

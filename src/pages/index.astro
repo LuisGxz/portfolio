@@ -6,19 +6,21 @@ import { SITE_DATA, TRANSLATIONS, TECH_GLYPHS, PROFICIENCY } from "../data/site"
 const d = SITE_DATA;
 const en = TRANSLATIONS.en;
 const es = TRANSLATIONS.es;
+const tagline = d.taglines[0];
 
 const allTechs = [
   ...d.stack.Frontend, ...d.stack.Backend,
   ...d.stack.Databases, ...d.stack["Cloud & DevOps"],
 ];
 const marqueeItems = [...allTechs, ...allTechs];
+const totalTechs = allTechs.length;
 
 const categories = Object.keys(d.projects.reduce((a, p) => { a[p.category] = true; return a; }, {} as Record<string, boolean>));
 const catCounts: Record<string, number> = {};
 for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0) + 1;
 ---
 
-<Layout title="Luis Chiquito · Software Engineer">
+<Layout title="Luis Chiquito Vera — Software Engineer">
   <div class="grid-bg"></div>
   <div class="scroll-prog" id="scroll-prog"></div>
 
@@ -26,7 +28,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
   <nav class="nav" id="nav">
     <a href="#top" class="nav-brand">
       <span class="dot"></span>
-      <span class="mono">LC</span>
+      <span class="mono">{d.shortName}</span>
       <span style="color: var(--fg-3)">/ software engineer</span>
     </a>
     <div class="nav-links">
@@ -70,13 +72,13 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
           <span class="tnum" id="utc-clock">UTC --:--:--</span>
         </div>
         <h1>
-          <span>Luis</span><br />
-          <span class="indent">Chiquito<span class="accent">.</span></span>
+          <span>Luis Chiquito</span><br />
+          <span class="indent">Vera<span class="accent">.</span></span>
         </h1>
         <p class="hero-tagline">
           <span class="arrow">→</span>
-          <span class="t-en">{d.tagline.en}</span>
-          <span class="t-es">{d.tagline.es}</span>
+          <span class="t-en">{tagline.en}</span>
+          <span class="t-es">{tagline.es}</span>
         </p>
         <div class="hero-bottom">
           <div class="stat">
@@ -84,8 +86,8 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
             <span>YEARS · since {d.startedYear}</span>
           </div>
           <div class="stat">
-            <span class="v tnum">04</span>
-            <span>BACKEND LANGS</span>
+            <span class="v tnum">{String(Object.keys(d.stack).length).padStart(2, "0")}</span>
+            <span>STACK AREAS</span>
           </div>
           <div class="stat" style="align-items: flex-end; text-align: right;">
             <span class="v">↓</span>
@@ -115,7 +117,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
           <span class="t-en">{en.sections.about}</span>
           <span class="t-es">{es.sections.about}</span>
         </h2>
-        <span class="section-aside">{d.startedYear}—2026</span>
+        <span class="section-aside">{d.startedYear}—present</span>
       </div>
       <div class="about-grid">
         <div class="reveal">
@@ -134,6 +136,54 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
               <div class="l">projects shipped</div>
             </div>
           </div>
+
+          <!-- Education -->
+          <div class="about-education reveal">
+            <div class="subsection-label">
+              // <span class="t-en">{en.sections.education}</span>
+              <span class="t-es">{es.sections.education}</span>
+            </div>
+            <div class="edu-block">
+              <div class="edu-degree">
+                <span class="t-en">{d.education.degree.en}</span>
+                <span class="t-es">{d.education.degree.es}</span>
+              </div>
+              <div class="edu-institution">{d.education.institution}</div>
+              <div class="edu-period">{d.education.period}</div>
+            </div>
+          </div>
+
+          <!-- Publication -->
+          {d.publication && (
+            <div class="about-publication reveal">
+              <div class="subsection-label">
+                // <span class="t-en">{en.sections.publication}</span>
+                <span class="t-es">{es.sections.publication}</span>
+              </div>
+              <div class="pub-block">
+                <span class="pub-title">{d.publication.title}</span>
+              </div>
+            </div>
+          )}
+
+          <!-- Certifications -->
+          <div class="about-certs reveal">
+            <div class="subsection-label">
+              // <span class="t-en">{en.sections.certifications}</span>
+              <span class="t-es">{es.sections.certifications}</span>
+            </div>
+            <div class="certs-list">
+              {d.certifications.map((cert) => (
+                <div class="cert-item">
+                  <span class="cert-name">
+                    <span class="t-en">{cert.name.en}</span>
+                    <span class="t-es">{cert.name.es}</span>
+                  </span>
+                  <span class="cert-issuer">{cert.issuer}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         <div>
           <div style="font-family: var(--mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">
@@ -142,11 +192,11 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
           </div>
           <div class="reveal-stagger tl-vertical reveal">
             {d.timeline.map((item, i) => {
-              const isActive = i === d.timeline.length - 1;
+              const isActive = i === 0;
               return (
                 <div class={`tl-item ${isActive ? "active" : ""}`}>
                   <div class="tl-year">
-                    {item.year}
+                    {item.year}—{item.endYear}
                     {isActive && (
                       <>
                         <span class="t-en"> · {en.about.activeLabel}</span>
@@ -158,7 +208,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
                     <span class="t-en">{item.role.en}</span>
                     <span class="t-es">{item.role.es}</span>
                   </div>
-                  <div class="tl-company">{item.company}</div>
+                  <div class="tl-company">{item.company} · {item.location}</div>
                   <div class="tl-summary">
                     <span class="t-en">{item.summary.en}</span>
                     <span class="t-es">{item.summary.es}</span>
@@ -182,7 +232,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
           <span class="t-en">{en.sections.stack}</span>
           <span class="t-es">{es.sections.stack}</span>
         </h2>
-        <span class="section-aside">// 16 technologies</span>
+        <span class="section-aside">// {totalTechs} technologies</span>
       </div>
       <div class="reveal-stagger stack-grid reveal">
         {Object.entries(d.stack).map(([cat, techs]) => (
@@ -312,7 +362,10 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
             ✓ <span class="t-en">{en.contact.sent}</span>
             <span class="t-es">{es.contact.sent}</span>
           </div>
-          <form class="form" id="contact-form" action={`https://formspree.io/f/${d.formspreeId}`} method="POST">
+          <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+            <input type="hidden" name="subject" value="Portfolio Contact — Luis Chiquito Vera" />
+            <input type="hidden" name="redirect" value="false" />
             <div class="field">
               <label>
                 01 / <span class="t-en">{en.contact.name}</span>
@@ -345,7 +398,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
 
     <!-- === Footer === -->
     <footer class="footer">
-      <span>© 2026 Luis Chiquito</span>
+      <span>© 2026 Luis Chiquito Vera</span>
       <span>
         <span class="t-en">{en.footer.built}</span>
         <span class="t-es">{es.footer.built}</span>
@@ -492,7 +545,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
       modeBtn.textContent = next === "dark" ? "☾" : "☀";
     });
 
-    // === Contact form (Formspree) ===
+    // === Contact form (Web3Forms) ===
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const sentEl = document.getElementById("form-sent")!;
 
