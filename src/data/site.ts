@@ -132,6 +132,18 @@ export const SITE_DATA = {
 
   projects: [
     {
+      id: 14, title: "FinPulse",
+      blurb: {
+        en: "Neobank-style banking dashboard: JWT auth with rotating refresh tokens and TOTP 2FA, ACID transfers over an immutable double-entry ledger, real-time updates via SignalR, budgets, savings goals and PDF statements. Clean Architecture, 48 unit tests + Playwright E2E.",
+        es: "Dashboard bancario estilo neobanco: auth JWT con refresh tokens rotativos y 2FA TOTP, transferencias ACID sobre un libro mayor inmutable de doble partida, tiempo real con SignalR, presupuestos, metas de ahorro y estados de cuenta en PDF. Clean Architecture, 48 tests unitarios + E2E con Playwright.",
+      },
+      tags: ["Angular 20", ".NET 9", "SQL Server", "SignalR", "JWT + 2FA"],
+      category: "Full Stack",
+      live: "https://luisgxz.github.io/FinPulse/about",
+      source: "https://github.com/LuisGxz/FinPulse",
+      placeholder: "FULL STACK / FINTECH",
+    },
+    {
       id: 1, title: "CountryDetailsApp",
       blurb: {
         en: "Angular application to explore detailed country information including population, languages, currencies and geographic data using a public REST API.",
