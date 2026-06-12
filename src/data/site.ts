@@ -132,6 +132,18 @@ export const SITE_DATA = {
 
   projects: [
     {
+      id: 16, title: "FleetGo",
+      blurb: {
+        en: "Last-mile logistics with live fleet tracking: one Ionic app with two role-based experiences — a mobile driver app (daily route, canvas signature capture, incident reporting) and a desktop dispatch panel with a live Leaflet map fed by SignalR. A server-side fleet simulator keeps the demo moving 24/7. Installable PWA, 20 unit tests + Playwright E2E.",
+        es: "Logística de última milla con tracking de flota en vivo: una app Ionic con dos experiencias por rol — app móvil del repartidor (ruta diaria, firma en canvas, reporte de incidencias) y panel de despacho de escritorio con mapa Leaflet en vivo alimentado por SignalR. Un simulador de flota server-side mantiene la demo en movimiento 24/7. PWA instalable, 20 tests unitarios + E2E con Playwright.",
+      },
+      tags: ["Ionic 8", "Angular 20", ".NET 9", "SignalR", "Leaflet"],
+      category: "Full Stack",
+      live: "https://luisgxz.github.io/FleetGo/",
+      source: "https://github.com/LuisGxz/FleetGo",
+      placeholder: "FULL STACK / LOGISTICS",
+    },
+    {
       id: 15, title: "MediTrack",
       blurb: {
         en: "Clinic management & telemedicine platform: appointment scheduling with computed free slots and a server-side state machine, electronic medical records, prescriptions with digital signing, and an append-only audit trail. Strict RBAC where admins can never read clinical data. 74 unit tests + Playwright E2E.",
