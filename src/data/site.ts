@@ -132,6 +132,18 @@ export const SITE_DATA = {
 
   projects: [
     {
+      id: 15, title: "MediTrack",
+      blurb: {
+        en: "Clinic management & telemedicine platform: appointment scheduling with computed free slots and a server-side state machine, electronic medical records, prescriptions with digital signing, and an append-only audit trail. Strict RBAC where admins can never read clinical data. 74 unit tests + Playwright E2E.",
+        es: "Plataforma de gestión clínica y telemedicina: agenda de citas con slots libres calculados y máquina de estados server-side, historia clínica electrónica, recetas con firma digital y auditoría append-only. RBAC estricto donde el admin nunca lee datos clínicos. 74 tests unitarios + E2E con Playwright.",
+      },
+      tags: ["Angular 20", ".NET 9", "SQL Server", "RBAC", "Audit trail"],
+      category: "Full Stack",
+      live: "https://luisgxz.github.io/MediTrack/about",
+      source: "https://github.com/LuisGxz/MediTrack",
+      placeholder: "FULL STACK / HEALTHCARE",
+    },
+    {
       id: 14, title: "FinPulse",
       blurb: {
         en: "Neobank-style banking dashboard: JWT auth with rotating refresh tokens and TOTP 2FA, ACID transfers over an immutable double-entry ledger, real-time updates via SignalR, budgets, savings goals and PDF statements. Clean Architecture, 48 unit tests + Playwright E2E.",
