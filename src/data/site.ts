@@ -132,6 +132,18 @@ export const SITE_DATA = {
 
   projects: [
     {
+      id: 17, title: "ShopForge",
+      blurb: {
+        en: "A specialty-coffee storefront with a real commerce backend: catalog with URL-driven filters, variant pricing, verified-purchase reviews, a guest cart that merges on login, and a three-step Stripe checkout. Orders finalize in a single transaction (stock, coupon, payment — all or nothing, idempotent). Admin console with a sales dashboard and order fulfilment. 61 unit tests + Playwright E2E.",
+        es: "Tienda de café de especialidad con un backend de comercio real: catálogo con filtros en la URL, precio por variante, reseñas con compra verificada, carrito de invitado que se fusiona al iniciar sesión y checkout Stripe en 3 pasos. Las órdenes se finalizan en una sola transacción (stock, cupón, pago — todo o nada, idempotente). Consola admin con dashboard de ventas y fulfilment. 61 tests unitarios + E2E con Playwright.",
+      },
+      tags: ["Angular 20", ".NET 9", "SQL Server", "Stripe", "Clean Architecture"],
+      category: "Full Stack",
+      live: "https://luisgxz.github.io/ShopForge/",
+      source: "https://github.com/LuisGxz/ShopForge",
+      placeholder: "FULL STACK / E-COMMERCE",
+    },
+    {
       id: 16, title: "FleetGo",
       blurb: {
         en: "Last-mile logistics with live fleet tracking: one Ionic app with two role-based experiences — a mobile driver app (daily route, canvas signature capture, incident reporting) and a desktop dispatch panel with a live Leaflet map fed by SignalR. A server-side fleet simulator keeps the demo moving 24/7. Installable PWA, 20 unit tests + Playwright E2E.",
