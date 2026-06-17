@@ -654,10 +654,32 @@ a.pub-title:hover { color: var(--accent); }
 }
 .cert-featured-link:hover { opacity: 0.7; }
 
+/* Cert accordion (collapses the 15 individual formations) */
+.certs-accordion {
+  border: 1px solid var(--line-soft); border-radius: 8px; overflow: hidden;
+}
+.certs-summary {
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em;
+  color: var(--fg-2);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.certs-summary::-webkit-details-marker { display: none; }
+.certs-summary:hover { background: var(--bg-3); color: var(--fg); }
+.certs-chev {
+  font-size: 14px; color: var(--fg-3);
+  transition: transform var(--t-med) var(--ease);
+}
+.certs-accordion[open] .certs-summary { border-bottom: 1px solid var(--line-soft); }
+.certs-accordion[open] .certs-chev { transform: rotate(180deg); color: var(--accent); }
+
 /* Cert grid */
 .certs-list {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
 }
+.certs-accordion .certs-list { padding: 14px; }
 .cert-item {
   display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
   padding: 8px 12px; border: 1px solid var(--line-soft); border-radius: 6px;

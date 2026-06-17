@@ -226,18 +226,27 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
               </a>
             </div>
 
-            {/* Individual formations */}
-            <div class="certs-list">
-              {d.certifications.map((cert) => (
-                <a href={cert.url} target="_blank" rel="noreferrer" class="cert-item">
-                  <span class="cert-name">
-                    <span class="t-en">{cert.name.en}</span>
-                    <span class="t-es">{cert.name.es}</span>
-                  </span>
-                  <span class="cert-date">{cert.date}</span>
-                </a>
-              ))}
-            </div>
+            {/* Individual formations — collapsed into an accordion to save space */}
+            <details class="certs-accordion">
+              <summary class="certs-summary">
+                <span class="certs-summary-label">
+                  <span class="t-en">All {d.certifications.length} certifications</span>
+                  <span class="t-es">Las {d.certifications.length} certificaciones</span>
+                </span>
+                <span class="certs-chev" aria-hidden="true">⌄</span>
+              </summary>
+              <div class="certs-list">
+                {d.certifications.map((cert) => (
+                  <a href={cert.url} target="_blank" rel="noreferrer" class="cert-item">
+                    <span class="cert-name">
+                      <span class="t-en">{cert.name.en}</span>
+                      <span class="t-es">{cert.name.es}</span>
+                    </span>
+                    <span class="cert-date">{cert.date}</span>
+                  </a>
+                ))}
+              </div>
+            </details>
           </div>
         </div>
         <div>
