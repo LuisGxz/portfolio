@@ -166,6 +166,38 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
               ) : (
                 <span class="pub-title">{d.publication.title}</span>
               )}
+                {d.publication.venue && <span class="pub-venue">{d.publication.venue}</span>}
+              </div>
+            </div>
+          )}
+
+          <!-- Recognition -->
+          {d.recognition && (
+            <div class="about-recognition reveal">
+              <div class="subsection-label">
+                // <span class="t-en">{en.sections.recognition}</span>
+                <span class="t-es">{es.sections.recognition}</span>
+              </div>
+              <div class="reco-block">
+                <span class="reco-badge">★ {d.recognition.org}</span>
+                <span class="reco-title">
+                  <span class="t-en">{d.recognition.title.en}</span>
+                  <span class="t-es">{d.recognition.title.es}</span>
+                </span>
+                <span class="reco-cat">
+                  <span class="t-en">“{d.recognition.category.en}”</span>
+                  <span class="t-es">“{d.recognition.category.es}”</span>
+                </span>
+                <span class="reco-detail">
+                  <span class="t-en">{d.recognition.detail.en}</span>
+                  <span class="t-es">{d.recognition.detail.es}</span>
+                </span>
+                {d.recognition.url && (
+                  <a href={d.recognition.url} target="_blank" rel="noreferrer" class="reco-link">
+                    <span class="t-en">{en.projects.cert}</span>
+                    <span class="t-es">{es.projects.cert}</span> ↗
+                  </a>
+                )}
               </div>
             </div>
           )}
@@ -316,14 +348,23 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
 
       <div class="projects-grid" id="projects-grid">
         {d.projects.map((p, i) => (
-          <article class="project-card" data-category={p.category} style={`--delay: ${i * 80}ms`}>
+          <article class={`project-card ${p.status === "soon" ? "is-soon" : ""}`} data-category={p.category} style={`--delay: ${i * 80}ms`}>
             <div class="project-img">
+              <img class="project-shot" src={`${import.meta.env.BASE_URL}img/projects/${p.image}`} alt={p.title} loading="lazy" width="1200" height="750" />
               <span class="project-img-num">P/{String(p.id).padStart(2, "0")}</span>
-              <span class="project-img-label">{p.placeholder}</span>
+              {p.status === "soon" && (
+                <span class="project-soon">
+                  <span class="t-en">{en.projects.soon}</span>
+                  <span class="t-es">{es.projects.soon}</span>
+                </span>
+              )}
             </div>
             <div class="project-body">
               <div class="project-meta">
-                <span>{p.category}</span>
+                <span>
+                  <span class="t-en">{p.domain.en}</span>
+                  <span class="t-es">{p.domain.es}</span>
+                </span>
                 <span>0{p.tags.length} TECH</span>
               </div>
               <h3 class="project-title">{p.title}</h3>
@@ -335,14 +376,23 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
                 {p.tags.map((tag) => <span class="project-tag">{tag}</span>)}
               </div>
               <div class="project-actions">
-                <a class="btn btn-primary" href={p.live} target="_blank" rel="noreferrer">
-                  <span class="t-en">{en.projects.live}</span>
-                  <span class="t-es">{es.projects.live}</span> →
-                </a>
-                <a class="btn" href={p.source} target="_blank" rel="noreferrer">
-                  <span class="t-en">{en.projects.source}</span>
-                  <span class="t-es">{es.projects.source}</span> ⌘
-                </a>
+                {p.status === "live" ? (
+                  <>
+                    <a class="btn btn-primary" href={p.live} target="_blank" rel="noreferrer">
+                      <span class="t-en">{en.projects.live}</span>
+                      <span class="t-es">{es.projects.live}</span> →
+                    </a>
+                    <a class="btn" href={p.source} target="_blank" rel="noreferrer">
+                      <span class="t-en">{en.projects.source}</span>
+                      <span class="t-es">{es.projects.source}</span> ⌘
+                    </a>
+                  </>
+                ) : (
+                  <span class="btn btn-soon" aria-disabled="true">
+                    <span class="t-en">{en.projects.soonNote}</span>
+                    <span class="t-es">{es.projects.soonNote}</span>
+                  </span>
+                )}
               </div>
             </div>
           </article>
