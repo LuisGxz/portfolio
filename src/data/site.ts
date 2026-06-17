@@ -293,7 +293,7 @@ export const SITE_DATA = {
       status: "soon",
       slug: "learnloop", shots: 3, filters: ["Angular", "Spring"],
       live: null,
-      source: null,
+      source: "https://github.com/LuisGxz/LearnLoop",
     },
     {
       id: 11, title: "ChatSphere",
