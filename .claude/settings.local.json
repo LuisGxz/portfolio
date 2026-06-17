@@ -4,7 +4,17 @@
       "Bash(npm install:*)",
       "Bash(npx astro:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)",
+      "Bash(npm run:*)",
+      "Bash(mkdir website *)",
+      "Bash(mv .astro .git .github .gitignore astro.config.mjs dist node_modules package.json package-lock.json public src tsconfig.json .claude website/)",
+      "Bash(mv docs *)",
+      "Bash(mkdir docs *)",
+      "Bash(mv website/docs/PORTFOLIO_PROJECTS.md docs/)"
     ]
   }
 }
