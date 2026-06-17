@@ -326,6 +326,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .projects-controls {
   display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px;
   align-items: center; justify-content: space-between;
+  /* Sit above the project cards (which create stacking contexts via transform),
+     so the filter popup is never painted behind them. */
+  position: relative; z-index: 20;
 }
 .filter-bar { position: relative; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .filter-toggle {
