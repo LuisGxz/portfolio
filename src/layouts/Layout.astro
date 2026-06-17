@@ -3,20 +3,24 @@ interface Props {
   title: string;
 }
 const { title } = Astro.props;
+// Base without trailing slash so `${base}/favicon.svg` is single-slashed
+// (BASE_URL is "/portfolio" with no trailing slash for this deploy).
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const site = import.meta.env.SITE ?? "";
 ---
 <!DOCTYPE html>
 <html lang="en" data-mode="dark" data-anim="expressive" data-body="sans">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Luis Chiquito Vera — Software Engineer | Full Stack Developer. 5+ years building scalable web and mobile applications across fintech, government, and enterprise." />
+  <meta name="description" content="Luis Chiquito — Software Engineer | Full Stack Developer. 5+ years building scalable web and mobile applications across fintech, government, and enterprise." />
   <meta property="og:title" content={title} />
   <meta property="og:description" content="Software Engineer | Full Stack Developer — 5+ years building scalable web and mobile applications." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content={`${import.meta.env.SITE}${import.meta.env.BASE_URL}og-image.png`} />
-  <meta property="og:url" content={`${import.meta.env.SITE}${import.meta.env.BASE_URL}`} />
+  <meta property="og:image" content={`${site}${base}/og-image.png`} />
+  <meta property="og:url" content={`${site}${base}/`} />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+  <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" as="style" />

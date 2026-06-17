@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/global.css";
-import { SITE_DATA, TRANSLATIONS, TECH_GLYPHS, PROFICIENCY } from "../data/site";
+import { SITE_DATA, TRANSLATIONS, TECH_GLYPHS, PROFICIENCY, FILTER_FACETS } from "../data/site";
 
 const d = SITE_DATA;
 // Site base without a trailing slash, so `${base}/img/...` is always single-slashed
@@ -18,12 +18,13 @@ const allTechs = [
 const marqueeItems = [...allTechs, ...allTechs];
 const totalTechs = allTechs.length;
 
-const categories = Object.keys(d.projects.reduce((a, p) => { a[p.category] = true; return a; }, {} as Record<string, boolean>));
-const catCounts: Record<string, number> = {};
-for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0) + 1;
+// Counts per filter facet → only show facets that actually match projects.
+const facetCounts: Record<string, number> = {};
+for (const p of d.projects) for (const f of (p.filters || [])) facetCounts[f] = (facetCounts[f] || 0) + 1;
+const facets = FILTER_FACETS.filter((f) => facetCounts[f.key]);
 ---
 
-<Layout title="Luis Chiquito Vera — Software Engineer">
+<Layout title="Luis Chiquito — Software Engineer">
   <div class="grid-bg"></div>
   <div class="scroll-prog" id="scroll-prog"></div>
 
@@ -75,8 +76,8 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
           <span class="tnum" id="utc-clock">UTC --:--:--</span>
         </div>
         <h1>
-          <span>Luis Chiquito</span><br />
-          <span class="indent">Vera<span class="accent">.</span></span>
+          <span>Luis</span><br />
+          <span class="indent">Chiquito<span class="accent">.</span></span>
         </h1>
         <p class="hero-tagline">
           <span class="arrow">→</span>
@@ -337,30 +338,44 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
       </div>
 
       <div class="reveal projects-controls">
-        <div class="filter-row">
-          <button class="filter-btn active" data-filter="All">
-            <span class="t-en">{en.projects.filterAll}</span>
-            <span class="t-es">{es.projects.filterAll}</span>
-            <span style="margin-left: 6px; opacity: 0.6;">({d.projects.length})</span>
+        <div class="filter-bar">
+          <button class="filter-toggle" id="filter-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+            <svg class="filter-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            <span class="t-en">{en.projects.filterBy}</span>
+            <span class="t-es">{es.projects.filterBy}</span>
+            <span class="filter-badge" id="filter-badge" hidden>0</span>
+            <span class="filter-chev" aria-hidden="true">⌄</span>
           </button>
-          {categories.map((cat) => (
-            <button class="filter-btn" data-filter={cat}>
-              <span class="t-en">{en.projects.filters[cat] || cat}</span>
-              <span class="t-es">{es.projects.filters[cat] || cat}</span>
-              <span style="margin-left: 6px; opacity: 0.6;">({catCounts[cat]})</span>
-            </button>
-          ))}
+          <button class="filter-clear" id="filter-clear" type="button" hidden>
+            <span class="t-en">{en.projects.clear}</span>
+            <span class="t-es">{es.projects.clear}</span> ✕
+          </button>
+
+          <div class="filter-popup" id="filter-popup" role="menu" hidden>
+            <div class="filter-popup-grid">
+              {facets.map((f) => (
+                <button class="facet" type="button" data-facet={f.key} role="menuitemcheckbox" aria-checked="false">
+                  <span class="facet-label">
+                    <span class="t-en">{f.en}</span>
+                    <span class="t-es">{f.es}</span>
+                  </span>
+                  <span class="facet-count">{facetCounts[f.key]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         <div class="filter-count">
-          <span class="t-en">{en.projects.countLabel}</span>
-          <span class="t-es">{es.projects.countLabel}</span>
-          {" "}<span id="filter-shown" style="color: var(--fg)">{d.projects.length}</span> / {d.projects.length}
+          <span id="filter-shown" style="color: var(--fg)">{d.projects.length}</span>
+          <span style="opacity: 0.5;"> / {d.projects.length} </span>
+          <span class="t-en">{en.projects.projectsWord}</span>
+          <span class="t-es">{es.projects.projectsWord}</span>
         </div>
       </div>
 
       <div class="projects-grid" id="projects-grid">
         {d.projects.map((p, i) => (
-          <article class={`project-card ${p.status === "soon" ? "is-soon" : ""}`} data-category={p.category} style={`--delay: ${i * 80}ms`}>
+          <article class={`project-card ${p.status === "soon" ? "is-soon" : ""}`} data-filters={(p.filters || []).join(" ")} style={`--delay: ${i * 80}ms`}>
             <div class="project-img">
               <div class="slider" data-slider>
                 <div class="slides" data-slides>
@@ -476,7 +491,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
           <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
             <!-- Web3Forms access key — keeps the recipient email out of the page. -->
             <input type="hidden" name="access_key" value="827f63a2-1c76-4162-85d0-3877d1bcce0e" />
-            <input type="hidden" name="subject" value="Portfolio Contact — Luis Chiquito Vera" />
+            <input type="hidden" name="subject" value="Portfolio Contact — Luis Chiquito" />
             <input type="hidden" name="from_name" value="Portfolio · luisgxz" />
             <input type="hidden" name="redirect" value="false" />
             <!-- Honeypot: bots fill this hidden field; real users never see it. -->
@@ -513,7 +528,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
 
     <!-- === Footer === -->
     <footer class="footer">
-      <span>© 2026 Luis Chiquito Vera</span>
+      <span>© 2026 Luis Chiquito</span>
       <span>
         <span class="t-en">{en.footer.built}</span>
         <span class="t-es">{es.footer.built}</span>
@@ -634,25 +649,60 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
       cardObserver.observe(el);
     });
 
-    // === Project filter ===
-    const filterBtns = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
-    const cards = document.querySelectorAll<HTMLElement>(".project-card");
+    // === Project filter (stack popup, multi-select OR) ===
+    const fToggle = document.getElementById("filter-toggle")!;
+    const fPopup = document.getElementById("filter-popup")!;
+    const fBadge = document.getElementById("filter-badge")!;
+    const fClear = document.getElementById("filter-clear")!;
+    const facetBtns = Array.from(document.querySelectorAll<HTMLButtonElement>(".facet"));
+    const pCards = Array.from(document.querySelectorAll<HTMLElement>(".project-card"));
     const shownEl = document.getElementById("filter-shown")!;
+    const selected = new Set<string>();
 
-    filterBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const f = btn.dataset.filter!;
-        filterBtns.forEach((b) => b.classList.toggle("active", b === btn));
+    const applyFilter = () => {
+      let n = 0;
+      pCards.forEach((card) => {
+        const f = (card.dataset.filters || "").split(" ");
+        const show = selected.size === 0 || [...selected].some((s) => f.includes(s));
+        card.hidden = !show;
+        if (show) n++;
+      });
+      shownEl.textContent = String(n);
+      fBadge.textContent = String(selected.size);
+      fBadge.hidden = selected.size === 0;
+      fClear.hidden = selected.size === 0;
+      fToggle.classList.toggle("has-active", selected.size > 0);
+    };
 
-        let count = 0;
-        cards.forEach((card) => {
-          const show = f === "All" || card.dataset.category === f;
-          card.hidden = !show;
-          if (show) count++;
-        });
-        shownEl.textContent = String(count);
+    facetBtns.forEach((b) => {
+      b.addEventListener("click", () => {
+        const k = b.dataset.facet!;
+        if (selected.has(k)) selected.delete(k); else selected.add(k);
+        const on = selected.has(k);
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-checked", String(on));
+        applyFilter();
       });
     });
+
+    fClear.addEventListener("click", () => {
+      selected.clear();
+      facetBtns.forEach((b) => { b.classList.remove("active"); b.setAttribute("aria-checked", "false"); });
+      applyFilter();
+    });
+
+    const openFilter = (open: boolean) => {
+      fPopup.hidden = !open;
+      fToggle.setAttribute("aria-expanded", String(open));
+      fToggle.classList.toggle("open", open);
+    };
+    fToggle.addEventListener("click", (e) => { e.stopPropagation(); openFilter(fPopup.hidden); });
+    document.addEventListener("click", (e) => {
+      if (fPopup.hidden) return;
+      const t = e.target as HTMLElement;
+      if (!fPopup.contains(t) && !fToggle.contains(t)) openFilter(false);
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !fPopup.hidden) openFilter(false); });
 
     // === Language toggle ===
     const langBtn = document.getElementById("lang-toggle")!;
