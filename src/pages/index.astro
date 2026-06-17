@@ -350,7 +350,24 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
         {d.projects.map((p, i) => (
           <article class={`project-card ${p.status === "soon" ? "is-soon" : ""}`} data-category={p.category} style={`--delay: ${i * 80}ms`}>
             <div class="project-img">
-              <img class="project-shot" src={`${import.meta.env.BASE_URL}img/projects/${p.image}`} alt={p.title} loading="lazy" width="1200" height="750" />
+              <div class="slider" data-slider>
+                <div class="slides" data-slides>
+                  {Array.from({ length: p.shots }).map((_, s) => (
+                    <img class="slide" src={`${import.meta.env.BASE_URL}img/projects/${p.slug}/0${s + 1}-screen.png`} alt={`${p.title} — screen ${s + 1}`} loading={i < 3 && s === 0 ? "eager" : "lazy"} width="1200" height="750" draggable="false" />
+                  ))}
+                </div>
+                {p.shots > 1 && (
+                  <>
+                    <button class="slider-arrow prev" data-prev type="button" aria-label="Previous screen">‹</button>
+                    <button class="slider-arrow next" data-next type="button" aria-label="Next screen">›</button>
+                    <div class="slider-dots" data-dots>
+                      {Array.from({ length: p.shots }).map((_, s) => (
+                        <button class={`dot ${s === 0 ? "active" : ""}`} data-dot={s} type="button" aria-label={`Screen ${s + 1}`}></button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
               <span class="project-img-num">P/{String(p.id).padStart(2, "0")}</span>
               {p.status === "soon" && (
                 <span class="project-soon">
@@ -435,14 +452,18 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
             ✓ <span class="t-en">{en.contact.sent}</span>
             <span class="t-es">{es.contact.sent}</span>
           </div>
-          <div class="form-error" id="form-error">
-            <span class="t-en">{en.contact.error}</span>
-            <span class="t-es">{es.contact.error}</span>
+          <div class="form-error" id="form-error" role="alert">
+            <span class="t-en" id="form-error-en">{en.contact.error}</span>
+            <span class="t-es" id="form-error-es">{es.contact.error}</span>
           </div>
+          <script type="application/json" id="contact-msgs" set:html={JSON.stringify({
+            error: { en: en.contact.error, es: es.contact.error },
+            wait: { en: en.contact.wait, es: es.contact.wait },
+            tooMany: { en: en.contact.tooMany, es: es.contact.tooMany },
+          })}></script>
           <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
-            <!-- Web3Forms access key — keeps the recipient email out of the page.
-                 Get a free key at https://web3forms.com (enter your email, confirm) and paste it here. -->
-            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+            <!-- Web3Forms access key — keeps the recipient email out of the page. -->
+            <input type="hidden" name="access_key" value="827f63a2-1c76-4162-85d0-3877d1bcce0e" />
             <input type="hidden" name="subject" value="Portfolio Contact — Luis Chiquito Vera" />
             <input type="hidden" name="from_name" value="Portfolio · luisgxz" />
             <input type="hidden" name="redirect" value="false" />
@@ -631,14 +652,42 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const sentEl = document.getElementById("form-sent")!;
     const errEl = document.getElementById("form-error")!;
+    const errEn = document.getElementById("form-error-en")!;
+    const errEs = document.getElementById("form-error-es")!;
     const submitBtn = form.querySelector<HTMLButtonElement>(".form-submit")!;
+    const MSG = JSON.parse(document.getElementById("contact-msgs")!.textContent || "{}");
+
+    // Client-side throttle. Stops casual flooding from the page; Web3Forms also
+    // rate-limits server-side and the honeypot drops bots.
+    const RL_KEY = "lcv.contact.sends";
+    const MIN_GAP = 20_000;       // ≥20s between messages
+    const WINDOW = 10 * 60_000;   // rolling 10-minute window
+    const MAX_IN_WINDOW = 3;      // at most 3 messages per window
+    const reads = (): number[] => {
+      try { return JSON.parse(localStorage.getItem(RL_KEY) || "[]"); } catch { return []; }
+    };
+
+    let errTimer: number | undefined;
+    function showErr(key: "error" | "wait" | "tooMany") {
+      const m = MSG[key] || MSG.error;
+      errEn.textContent = m.en; errEs.textContent = m.es;
+      errEl.classList.add("visible");
+      clearTimeout(errTimer);
+      errTimer = window.setTimeout(() => errEl.classList.remove("visible"), 6000);
+    }
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       errEl.classList.remove("visible");
+
+      const now = Date.now();
+      const recent = reads().filter((t) => now - t < WINDOW);
+      const last = recent[recent.length - 1];
+      if (last && now - last < MIN_GAP) { showErr("wait"); return; }
+      if (recent.length >= MAX_IN_WINDOW) { showErr("tooMany"); return; }
+
       submitBtn.disabled = true;
       const data = new FormData(form);
-
       let ok = false;
       try {
         const res = await fetch(form.action, {
@@ -651,15 +700,12 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
       } catch {
         ok = false;
       }
-
       submitBtn.disabled = false;
 
-      if (!ok) {
-        // Never fake success — tell the user it didn't go through.
-        errEl.classList.add("visible");
-        setTimeout(() => errEl.classList.remove("visible"), 6000);
-        return;
-      }
+      if (!ok) { showErr("error"); return; }
+
+      recent.push(now);
+      localStorage.setItem(RL_KEY, JSON.stringify(recent));
 
       form.classList.add("is-hidden");
       sentEl.classList.add("visible");
@@ -669,6 +715,42 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
         sentEl.classList.remove("visible");
         form.classList.remove("is-hidden");
       }, 4000);
+    });
+
+    // === Project card sliders ===
+    document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {
+      const track = slider.querySelector<HTMLElement>("[data-slides]");
+      if (!track) return;
+      const total = track.children.length;
+      if (total <= 1) return;
+      const dots = Array.from(slider.querySelectorAll<HTMLElement>("[data-dot]"));
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let i = 0;
+      let timer: number | undefined;
+
+      const go = (n: number) => {
+        i = (n + total) % total;
+        track.style.transform = `translateX(${-i * 100}%)`;
+        dots.forEach((d, k) => d.classList.toggle("active", k === i));
+      };
+      const stop = () => { clearInterval(timer); timer = undefined; };
+      const play = () => { if (reduce || timer) return; timer = window.setInterval(() => go(i + 1), 2200); };
+
+      slider.querySelector("[data-next]")?.addEventListener("click", () => { stop(); go(i + 1); });
+      slider.querySelector("[data-prev]")?.addEventListener("click", () => { stop(); go(i - 1); });
+      dots.forEach((d, k) => d.addEventListener("click", () => { stop(); go(k); }));
+      slider.addEventListener("mouseenter", play);
+      slider.addEventListener("mouseleave", stop);
+
+      // Touch swipe
+      let x0: number | null = null;
+      track.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; stop(); }, { passive: true });
+      track.addEventListener("touchend", (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) go(dx < 0 ? i + 1 : i - 1);
+        x0 = null;
+      });
     });
   </script>
 </Layout>
