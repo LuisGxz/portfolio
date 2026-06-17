@@ -4,6 +4,9 @@ import "../styles/global.css";
 import { SITE_DATA, TRANSLATIONS, TECH_GLYPHS, PROFICIENCY } from "../data/site";
 
 const d = SITE_DATA;
+// Site base without a trailing slash, so `${base}/img/...` is always single-slashed
+// (BASE_URL is "/portfolio" with no trailing slash for this deploy).
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const en = TRANSLATIONS.en;
 const es = TRANSLATIONS.es;
 const tagline = d.taglines[0];
@@ -193,7 +196,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
                   <span class="t-es">{d.recognition.detail.es}</span>
                 </span>
                 {d.recognition.cert && (
-                  <a href={`${import.meta.env.BASE_URL}cert/${d.recognition.cert}`} target="_blank" rel="noreferrer" class="reco-link">
+                  <a href={`${base}/cert/${d.recognition.cert}`} target="_blank" rel="noreferrer" class="reco-link">
                     <span class="t-en">{en.projects.cert}</span>
                     <span class="t-es">{es.projects.cert}</span> ↗
                   </a>
@@ -362,7 +365,7 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
               <div class="slider" data-slider>
                 <div class="slides" data-slides>
                   {Array.from({ length: p.shots }).map((_, s) => (
-                    <img class="slide" src={`${import.meta.env.BASE_URL}img/projects/${p.slug}/0${s + 1}-screen.png`} alt={`${p.title} — screen ${s + 1}`} loading={i < 3 && s === 0 ? "eager" : "lazy"} width="1200" height="750" draggable="false" />
+                    <img class="slide" src={`${base}/img/projects/${p.slug}/0${s + 1}-screen.png`} alt={`${p.title} — screen ${s + 1}`} loading={i < 3 && s === 0 ? "eager" : "lazy"} width="1200" height="750" draggable="false" />
                   ))}
                 </div>
                 {p.shots > 1 && (
