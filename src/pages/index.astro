@@ -521,6 +521,18 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
     </footer>
   </main>
 
+  <!-- === Lightbox / image viewer === -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lb-close" data-lb-close type="button" aria-label="Close viewer">✕</button>
+    <button class="lb-arrow lb-prev" data-lb-prev type="button" aria-label="Previous image">‹</button>
+    <figure class="lb-stage">
+      <img class="lb-img" id="lb-img" alt="" />
+      <figcaption class="lb-caption" id="lb-caption"></figcaption>
+    </figure>
+    <button class="lb-arrow lb-next" data-lb-next type="button" aria-label="Next image">›</button>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+
   <script>
     // === UTC Clock ===
     const clockEl = document.getElementById("utc-clock")!;
@@ -763,6 +775,68 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
         if (Math.abs(dx) > 40) go(dx < 0 ? i + 1 : i - 1);
         x0 = null;
       });
+    });
+
+    // === Lightbox / image viewer ===
+    const lb = document.getElementById("lightbox")!;
+    const lbImg = document.getElementById("lb-img") as HTMLImageElement;
+    const lbCaption = document.getElementById("lb-caption")!;
+    const lbCounter = document.getElementById("lb-counter")!;
+    let lbList: { src: string; cap: string }[] = [];
+    let lbIdx = 0;
+
+    const lbRender = () => {
+      const item = lbList[lbIdx];
+      if (!item) return;
+      lbImg.src = item.src;
+      lbImg.alt = item.cap;
+      lbCaption.textContent = item.cap;
+      const multi = lbList.length > 1;
+      lbCounter.textContent = multi ? `${lbIdx + 1} / ${lbList.length}` : "";
+      lb.querySelectorAll<HTMLElement>(".lb-arrow").forEach((a) => (a.style.display = multi ? "" : "none"));
+    };
+    const lbOpen = (list: { src: string; cap: string }[], idx: number) => {
+      lbList = list; lbIdx = idx; lbRender();
+      lb.classList.add("open");
+      lb.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    };
+    const lbClose = () => {
+      lb.classList.remove("open");
+      lb.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      lbImg.src = "";
+    };
+    const lbGo = (n: number) => { lbIdx = (n + lbList.length) % lbList.length; lbRender(); };
+
+    // Make every project screen clickable → open the viewer at that screen.
+    document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {
+      const slides = Array.from(slider.querySelectorAll<HTMLImageElement>(".slide"));
+      const list = slides.map((im) => ({ src: im.src, cap: im.alt }));
+      slides.forEach((im, idx) => {
+        im.classList.add("zoomable");
+        im.addEventListener("click", () => lbOpen(list, idx));
+      });
+    });
+
+    lb.querySelector("[data-lb-close]")?.addEventListener("click", lbClose);
+    lb.querySelector("[data-lb-prev]")?.addEventListener("click", (e) => { e.stopPropagation(); lbGo(lbIdx - 1); });
+    lb.querySelector("[data-lb-next]")?.addEventListener("click", (e) => { e.stopPropagation(); lbGo(lbIdx + 1); });
+    lb.addEventListener("click", (e) => { if (e.target === lb || (e.target as HTMLElement).classList.contains("lb-stage")) lbClose(); });
+    document.addEventListener("keydown", (e) => {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") lbClose();
+      else if (e.key === "ArrowLeft") lbGo(lbIdx - 1);
+      else if (e.key === "ArrowRight") lbGo(lbIdx + 1);
+    });
+    // Swipe on touch
+    let lx0: number | null = null;
+    lb.addEventListener("touchstart", (e) => { lx0 = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener("touchend", (e) => {
+      if (lx0 === null) return;
+      const dx = e.changedTouches[0].clientX - lx0;
+      if (Math.abs(dx) > 40) lbGo(dx < 0 ? lbIdx + 1 : lbIdx - 1);
+      lx0 = null;
     });
   </script>
 </Layout>
