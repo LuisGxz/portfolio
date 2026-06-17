@@ -687,13 +687,13 @@ for (const p of d.projects) catCounts[p.category] = (catCounts[p.category] || 0)
       if (recent.length >= MAX_IN_WINDOW) { showErr("tooMany"); return; }
 
       submitBtn.disabled = true;
-      const data = new FormData(form);
+      const payload = Object.fromEntries(new FormData(form).entries());
       let ok = false;
       try {
         const res = await fetch(form.action, {
           method: "POST",
-          body: data,
-          headers: { Accept: "application/json" },
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
         });
         const json = await res.json().catch(() => ({}));
         ok = res.ok && (json as any).success === true;
