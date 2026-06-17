@@ -132,6 +132,18 @@ export const SITE_DATA = {
 
   projects: [
     {
+      id: 18, title: "DocuMind",
+      blurb: {
+        en: "An AI document assistant (RAG): upload a contract and ask in plain language — answers stream back grounded in the text, with citations to the exact page that highlight the source passage. Real retrieval over Postgres + pgvector with local ONNX embeddings, an extractive generator that never hallucinates (and a Claude adapter one env-var away), JWT + Owner/Viewer RBAC, conversations and auto-summaries. 50 unit tests + Playwright E2E.",
+        es: "Asistente de documentos con IA (RAG): sube un contrato y pregunta en lenguaje natural — las respuestas llegan en streaming, fundamentadas en el texto y con citas a la página exacta que resaltan el pasaje fuente. Recuperación real sobre Postgres + pgvector con embeddings locales ONNX, un generador extractivo que nunca alucina (y un adapter de Claude a una env-var de distancia), JWT + RBAC Propietario/Lector, conversaciones y resúmenes automáticos. 50 tests unitarios + E2E con Playwright.",
+      },
+      tags: ["Angular 20", "NestJS", "Postgres + pgvector", "RAG", "ONNX embeddings"],
+      category: "Full Stack",
+      live: "https://luisgxz.github.io/DocuMind/about",
+      source: "https://github.com/LuisGxz/DocuMind",
+      placeholder: "FULL STACK / AI · RAG",
+    },
+    {
       id: 17, title: "ShopForge",
       blurb: {
         en: "A specialty-coffee storefront with a real commerce backend: catalog with URL-driven filters, variant pricing, verified-purchase reviews, a guest cart that merges on login, and a three-step Stripe checkout. Orders finalize in a single transaction (stock, coupon, payment — all or nothing, idempotent). Admin console with a sales dashboard and order fulfilment. 61 unit tests + Playwright E2E.",
