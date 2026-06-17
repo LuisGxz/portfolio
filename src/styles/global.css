@@ -517,6 +517,19 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .form-sent.visible { display: block; }
 .form.is-hidden { display: none; }
+.form-submit:disabled { opacity: 0.5; cursor: progress; transform: none; }
+.form-error {
+  font-family: var(--mono); font-size: 13px; color: #e25555;
+  border: 1px solid rgba(226, 85, 85, 0.4); padding: 14px;
+  border-radius: 4px; background: rgba(226, 85, 85, 0.08);
+  display: none;
+}
+.form-error.visible { display: block; }
+/* Honeypot — visually hidden, off-screen, never focusable/announced */
+.hp {
+  position: absolute !important; left: -9999px !important;
+  width: 1px; height: 1px; opacity: 0; pointer-events: none;
+}
 
 /* === Footer === */
 .footer {

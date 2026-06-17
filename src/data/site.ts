@@ -147,8 +147,8 @@ export const SITE_DATA = {
       es: "Otorgado por el Rector de la Universidad de Guayaquil por contribuir al fortalecimiento de la investigación en la Facultad de Ciencias Matemáticas y Físicas (periodo ene–dic 2024).",
     },
     date: "2025-12",
-    // Drive link to the certificate — fill in to show a "View certificate" link.
-    url: "",
+    // Self-hosted certificate (public/cert/). Rendered with the site base path.
+    cert: "reconocimiento-ug.pdf",
   },
 
   projects: [
@@ -412,6 +412,7 @@ export const TRANSLATIONS = {
       sub: "I read every message. Reply usually within 24h.",
       name: "Your name", email: "Email", message: "What are you working on?",
       send: "Send message", sent: "Thanks — I'll be in touch.", orFind: "Or find me at",
+      error: "Couldn't send right now — please try again or reach me on LinkedIn.",
     },
     footer: { built: "Built from scratch · No template · No framework lock-in" },
   },
@@ -442,6 +443,7 @@ export const TRANSLATIONS = {
       sub: "Leo cada mensaje. Suelo responder en menos de 24h.",
       name: "Tu nombre", email: "Email", message: "¿En qué estás trabajando?",
       send: "Enviar mensaje", sent: "Gracias — te escribo pronto.", orFind: "O encuéntrame en",
+      error: "No se pudo enviar ahora — inténtalo de nuevo o escríbeme por LinkedIn.",
     },
     footer: { built: "Hecho a mano · Sin templates · Sin lock-in" },
   },
