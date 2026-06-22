@@ -5,7 +5,7 @@ export const SITE_DATA = {
   yearsExperience: 5,
   startedYear: 2021,
   location: "Guayaquil, Ecuador",
-  email: "luisernestochiquito@gmail.com",
+  email: "luisernestochiquitovera@gmail.com",
   github: "https://github.com/LuisGxz",
   linkedin: "https://www.linkedin.com/in/luis-chiquito-vera-579b81223/",
   availableForWork: true,
